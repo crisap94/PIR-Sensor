@@ -1,11 +1,11 @@
 #include <Pir.h>
 
-#ifdef DEBUGGIN
-#define PIR_DEBUG(String) (Serial.println(String))
+#ifdef PIR_DEBUG
+#define PIR_DEBUG_PRINT(String) (Serial.println(String))
 #endif
 
-#ifndef DEBUGGIN
-#define PIR_DEBUG(String)
+#ifndef PIR_DEBUG
+#define PIR_DEBUG_PRINT(String)
 #endif
 
 Pir::Pir(uint8_t _pin, void (*_callBackFunction)(void),
@@ -18,20 +18,20 @@ Pir::Pir(uint8_t _pin, void (*_callBackFunction)(void),
   this->previusMillis = 0;
 }
 
-Pir::~Pir() { PIR_DEBUG("Deleting Pir Object"); }
+Pir::~Pir() { PIR_DEBUG_PRINT("Deleting Pir Object"); }
 
 void Pir::begin() {
   pinMode(pin, INPUT);
-  PIR_DEBUG("Initializing Pin ");
+  PIR_DEBUG_PRINT("Initializing Pin ");
   check_CallBackFunction();
 }
 
 bool Pir::check_CallBackFunction() {
   if (!this->callBackFunction) {
-    PIR_DEBUG("The Pir Obj does not have a Call-Back-Function");
+    PIR_DEBUG_PRINT("The Pir Obj does not have a Call-Back-Function");
     return false;
   }
-  PIR_DEBUG("Function exist");
+  PIR_DEBUG_PRINT("Function exist");
   return true;
 }
 
@@ -39,7 +39,7 @@ void Pir::handle() {
   state = digitalRead(this->pin);
 
   if (previus_state == LOW && state == HIGH) {
-    PIR_DEBUG("PIR State: " + String(state));
+    PIR_DEBUG_PRINT("PIR State: " + String(state));
     if (check_CallBackFunction()) {
       Execute_CallBackFunction();
     }
